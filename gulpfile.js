@@ -1,20 +1,10 @@
 var gulp = require('gulp');
-var browserify = require('browserify');
-var babelify = require('babelify');
-var source = require('vinyl-source-stream');
+var babel = require('gulp-babel');
 
-gulp.task('bundle-history', function() {
-    return browserify({
-        extensions: ['.js', '.jsx'],
-        entries: 'main.js',
-    })
-    .transform(babelify.configure({
-        ignore: /(bower_components)|(node_modules)/
-    }))
-    .bundle()
-    .on("error", function (err) { console.log("Error : " + err.message); })
-    .pipe(source('bundle.js'))
-    .pipe(gulp.dest('dist'));
+gulp.task('react', function() {
+    gulp.src('./src/*')
+        .pipe(babel({presets: ['react', 'es2015']}))
+        .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('default', ['bundle-history']);
+gulp.task('default', ['react']);
